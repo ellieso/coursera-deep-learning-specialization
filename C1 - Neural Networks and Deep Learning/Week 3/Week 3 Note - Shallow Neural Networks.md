@@ -63,6 +63,7 @@ NN에서는 한 개의 training example에 대해서 다음과 같이 계산됩�
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/d9209438-8dec-4e5e-8f42-451c7d74dec6)
 
 이런식으 4x3의 행렬을 만들수 있고 x도 같은 방법으로 
+
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/38f251b6-1752-402e-8c75-7b897dc6cbfe)
 
 이렇게 표현할 수 있다. 최종적으로 z[1]을 구현하게 되면,
@@ -82,3 +83,32 @@ m개의 example에 대해서 계산하려면 위처럼 for문을 통해서 계�
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/26034d09-bac4-4d45-980a-2a9e4537e6da)
 
 위의 그림에서 W[1] * X 행렬을 보면, 행렬의 열은 입력데이터 x의 갯수를 나타내고 행렬의 행은 입력데이터 x의 차원수 m을 나타냅니다. 저기에 b[1]만 더해주면 z[1] 벡터가 만들어지는 것입니다.
+
+### Activation Functions
+지금까지 우리는 Sigmoid함수를 Activation Function으로 사용했는데, 때때로 다른 함수를 사용하는게 훨씬 나을 때도 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/f10a8805-b401-478a-82ff-754344c6025a)
+
+앞서 배운 내용에서 Activation Unit을 구하는 두 단계가 있었고, 위와 같은 Sigmoid 함수를 사용했었습니다. 이 Sigmoid 함수 대신 다른 함수를 사용할 수도 있으니, 조금 더 일반화시켜서 σ가 아닌 g(z)를 사용해서 식을 표현해보면 다음과 같습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/c80e1bcf-d461-4ec9-9f7f-48ffb0cc498c)
+
+어떤 경우에 따라 g(z)는 비선형 함수이고 Sigmoid가 아닐 수도 있습니다. Activation function 중에 Sigmoid 함수보다 항상 더 좋은 성능을 발휘하는 함수가 있는데, 바로 tanh 함수입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/fcb78ef4-bb8b-4871-b5e2-e09812c126cd)
+
+위와 같은 그래프를 가지며, -1에서 1 사이의 값을 가집니다. 또한 tanh 함수는 데이터를 중심에 위치시키려고 할 때, 평균이 0인 데이터를 갖게됩니다. 데이터를 중심에 위치시키는 효과 덕분에 다음 layer에서 학습이 더욱 쉽게 이루어지게 됩니다. 그래서 우리가 작업할 시 Hidden Layer에서는 Simoid는 거의 사용하지 않을 것이고, tanh 함수는 거의 항상 Sigmoid보다 우수하기 때문에 더 많이 사용될 것입니다.
+한 가지 예외가 있는데, Output layer에서는 Sigmoid를 사용합니다. 왜냐하면 결과값 y는 0이거나 1인데, 예측값인 y_hat은 0과 1사이의 값이며 -1과 1사이의 값이 아니기 때문입니다. 그래서 이진분류 문제일 때는 Output layer에서 Sigmoid 함수를 사용할 수 있습니다.
+
+Sigmoid와 tanh 함수는 한 가지 단점이 존재하는데, z가 매우 크거나 매우 작을 때, Gradient, 즉, 함수의 미분값(기울기)이 매우 작은 값이 됩니다. 따라서 z가 매우 크거나 작게 되면, 함수의 기울기는 거의 0이되고, Gradient Descent 알고리즘을 느리게 만드는 원인이 됩니다.
+이러한 문제 때문에 머신러닝에서 자주 사용되는 activation 함수 중에 다른 하나는 ReLU(Rectified Linear Unit) 함수입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a5eba16d-4fe4-4a07-9e75-8938c86cb4bd)
+
+ReLU 함수에서 z가 양수일 경우에는 미분값은 1이고, z가 음수이면 미분값은 0입니다. 수학적으로 z가 0인 지점, 즉 0에 매우 가까워지는 지점의 기울기는 구할 수가 없지만, 실제로는 걱정할 필요는 없습니다. 그래서 z가 0일 때, 우리는 미분값이 0이나 1인 것처럼 취급할 수 있고, 실제로 잘 동작합니다. 수학적으로는 사실 미분이 가능하지 않습니다. 그래서 우리는 출력값이 0 또는 1인 경우에, output layer에는 sigmoid 함수를 activation 함수로 선택할 수 있고, 나머지 다른 layer에서는 ReLU 함수를 선택할 수 있습니다. 만약 hidden layer에서 어떤 activation 함수를 사용해야될 지 모르겠다면 그냥 ReLU 함수를 사용하면 됩니다. ReLU의 한 가지 단점은 z가 음수일 때 미분값이 0이라는 것입니다.
+
+여기에 약간 다른 버전의 ReLU가 있는데 바로 Leaky ReLU라 부르는 함수입니다. 이 함수는 z가 양수일 때는 ReLU와 동일하고 z가 음수일 때는 약간의 기울기를 갖게 됩니다. 
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a4708874-c1e8-47cd-ac41-29350c7f04e8)
+
+Leaky ReLU는 대게 ReLU보다 더 잘 동작하지만, 실제로 잘 사용하지는 않습니다.
+
+ReLU와 Leaky ReLU의 장점은 이 함수에서 미분값 즉, 기울기가 0과는 다른 값이라는 점입니다. 실제로 ReLU 함수를 사용하면 NN이 종종 tanh나 sigmoid보다 훨씬 빠르게 동작하게 됩니다. 이러한 이유는 기울기에 의한 영향이 적다는 것인데 tanh나 sigmoid에서는 기울기가 0에 가까워져서 학습을 느리게 하는 경우가 있기 때문입니다. z가 음수일 때 ReLU함수의 기울기는 0인데, 실제로 hidden layer에서 z의 값은 0보다 충분히 클 것입니다. 그래서 학습이 빠르게 이루어질 수 있습니다.
+
+Leaky ReLU에서 0.01이라는 파라미터를 곱해서 사용했는데 다른 값을 사용할 수도 있습니다. 물론 더 잘 동작하는 경우도 있겠지만 일반적으로는 다른 값을 쓰는 경우는 잘 없다고 합니다. 만약 다른 값을 사용하고 싶다면 시도해보고 얼마나 잘 동작하는지 살펴보고 좋은 결과를 갖게 된다면 사용해도 괜찮을 거 같습니다.
+
