@@ -69,3 +69,16 @@ NN에서는 한 개의 training example에 대해서 다음과 같이 계산됩�
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/2d4d2d9a-88b2-4443-9434-b739c0e9bb6a)
 
 이러한 형태로 벡터화를 할 수 있고 구해진 z를 기반으로 a[1]도 구할 수 있습니다.
+
+### Vectorizing Across Multiple Examples
+이제까지 한 개의 training example에 대해서 NN에서의 순전파 진행를 알아봤고, m개의 training examples에 대한 순전파 진행을 알아보도록 하겠습니다. m개의 training exmples에 대해서 모든 activation노드를 구해야하고, 우리는 한 개의 training exmple에 했던 방식으로 m개의 example에 적용해야합니다.
+
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/91df0400-1e39-45ca-b22b-04ab67eb84c7)
+
+m개의 example에 대해서 계산하려면 위처럼 for문을 통해서 계산을 해야하지만, Vectorization을 하면 반복문없이 계산할 수 있습니다.
+
+### Explanation for Vectorized Implementation
+벡터화를 하는 이유는 프로그래밍 과정에서 비효율적인 계산을 하는 for 구문을 사용하지 않고 알고리즘 성능을 향상시키기 위해서 입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/26034d09-bac4-4d45-980a-2a9e4537e6da)
+
+위의 그림에서 W[1] * X 행렬을 보면, 행렬의 열은 입력데이터 x의 갯수를 나타내고 행렬의 행은 입력데이터 x의 차원수 m을 나타냅니다. 저기에 b[1]만 더해주면 z[1] 벡터가 만들어지는 것입니다.
