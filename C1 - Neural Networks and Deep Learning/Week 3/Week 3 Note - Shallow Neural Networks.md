@@ -34,5 +34,5 @@ Build a neural network with one hidden layer, using forward propagation and back
 위의 Neural Network에서 순전파와 역전파를 진행하면 아래와 같습니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/c40860e0-017e-4dd8-a9cd-357f4653ff85)
 여기서 위 첨자로 [1]이라고 붙었는데 해당 값이 첫 번째 layer에 해당하는 값이라는 것을 의미합니다.
-따라서, 첫번째 Layer에서 순전파를 진행하면서 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/c1d19db5-575f-4793-aefe-3cecbe6033ca) 를 구합니다. 첫번째 Layer에서 구한 a[1]을 사용해서 z[2]를 구하고 마지막 Layer이기 때문에 a[2]가 y-hat(예측치)가 됩니다. 이 결과값으로 Cost Function을 구하고 다시 역전파를 진행하면서 da[2], dz[2], dW[2], db[2]를 구하고 같은 방식으로 da[1],dz[1],dW[1],db[1]을 구합니다.
+따라서, 첫번째 Layer에서 순전파를 진행하면서 z[1] = W[1]x + b[1] 와 a[1] = σ(z[1])를 구합니다. 첫번째 Layer에서 구한 a[1]을 사용해서 z[2]를 구하고 마지막 Layer이기 때문에 a[2]가 y-hat(예측치)가 됩니다. 이 결과값으로 Cost Function을 구하고 다시 역전파를 진행하면서 da[2], dz[2], dW[2], db[2]를 구하고 같은 방식으로 da[1],dz[1],dW[1],db[1]을 구합니다.
 
