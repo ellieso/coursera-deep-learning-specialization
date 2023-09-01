@@ -14,6 +14,7 @@ Build a neural network with one hidden layer, using forward propagation and back
 신경망을 구현하기 앞서, 신경망(Neural Networks)의 전체적인 개요부터 알아보겠습니다.
 저번 시간에 보았던 Logistic Regression에 기반해서 살펴보면, 
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/43f815f6-99dc-4e56-9e44-b36d81825bae)
+
 위와 같은 Logistic Regression 모델에서 순전파(Forward Propagation)을 통해서 아래와 같이 식들을 도출했습니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/856cb25c-c1a9-43ba-aca5-bc4b891997af)
 
