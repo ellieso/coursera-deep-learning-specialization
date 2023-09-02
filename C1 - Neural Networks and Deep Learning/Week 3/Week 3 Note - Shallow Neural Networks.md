@@ -162,6 +162,15 @@ Gradient Descent는 다음과 같이 방식으로 진행됩니다.
 
 dZ[1]을 구하는 식에서 차원은 둘다 (n[1],m)이고, 곱은 행렬곱이 아닌 요소곱입니다. 파라미터로 axis = 1은 행은 유지하면서 각 행의 열을 모두 더하라는 의미이며 keepdims = True 파라미터를 통해서 계산된 결과가 rank 1 Matrix가 되지 않도록 차원을 유지시켜주는 역할을 합니다.
 
+### Backpropagation Intuition
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/40b2bd79-7d0a-418f-bfa7-461343440541)
+
+역전파는 순전파와 반대방향으로 진행됩니다. (da[2] -> dz[2] -> dw[2] -> db[2] -> da[1] -> dz[1] -> dw[1] -> db[1])
+dz[2]는 a[2]-y와 같고 dw[2]는 dz[1] * a[1]T이며, db[2] = dz[2]입니다. 그리고 dz[1]은 w[2]T * dz[2] * g[1]'(z[1])과 같습니다. dw[1]은 dz[1] * a[0]T와 같고  db[1]은 dz[1]과 같습니다.
+값을 정리하면 다음과 같습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/e2179f4f-507d-4028-b872-4e058b164dcc)
+
+
 ### Random Initialization
 NN에서 Weight(파라미터 W)를 랜덤으로 초기화하는 것은 중요합니다. 이전 Logistic Regression에서는 weight를 0으로 초기화하는 것이 괜찮았지만, NN에서 모든 weight를 0으로 초기화하고 Gradient Descent를 적용하면 제대로 동작하지 않습니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/84e3448c-e8e1-4d22-8bae-a00854bc7c1b)
