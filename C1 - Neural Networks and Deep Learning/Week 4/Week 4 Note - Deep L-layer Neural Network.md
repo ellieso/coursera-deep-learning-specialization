@@ -48,3 +48,20 @@ Deep Network Computing이란 무엇일까요? 얼굴인식이나 얼굴감지를
 
 Deep Network가 잘 작동하는 또다른 이유는 Circuit theory에서 유래된 결과입니다. 이 함수들은 작지만 심층 신경망으로 계산되며 작다는 것은 숨겨진 유닛의 수가 상대적으로 적다는 것을 의미합니다. 그러나 얕은 네트워크로 동일한 함수를 계산하려고 하면 숨겨진 레이어가 충분하지 않다면 계산하기 위해 숨겨진 유닛이 기하급수적으로 더 많이 필요할 수 있습니다.
 예를 들어 x1 XOR, x2 XOR, x3 XOR ...  XOR xn까지 계산하려고 할 때, XOR트리에 삽입하면 x1과 x2의 XOR을 계산하고 x3과 x4를 취해서 XOR을 계산합니다. 그런 다음 XOR 트리를 구축할 수 있습니다. 이렇게 해서 최종적으로 Y라고 불리는 회로를 만들 수 있습니다. XOR를 계산하기 위해 네트워크의 깊이는 로그 N의 순서대로 됩니다. 이 네트워크 내의 노드 수, 회선 컴포넌트 수, 게이트 수는 그다지 많지 않습니다. 하지만 여러 개의 숨겨진 레이어가 있는 신경망을 사용할 수 없다면 이 경우에는 로그와 숨겨진 레이어를 주문해야합니다. 하나의 숨겨진 레이어로 함수를 계산해야 한다면 이 모든 것들이 숨겨진 유닛으로 들어가게 해야합니다. 그런 다음 이러한 것들이 Y를 출력합니다. 결과적으로 Y를 계산하기 위해서는 숨겨진 레이어가 기하급수적으로 커야합니다.
+
+#### Building Blocks of Deep Neural Networks
+![image](https://github.com/ellieso/coursera-deep-learning-
+specialization/assets/83899219/e9b6cab4-9b3f-485e-9f02-dfb5647b0355)
+
+이전 시간에 순전파와 역전파에 대해서 배웠고 이것을 하나로 합쳐서 어떻게 Deep Network를 구성하는지 살펴보겠습니다. 여기 4개의 Layer로 구성된 DNN이 있을 때, 한 Layer에서 순전파와 역전파는 다음과 같이 계산됩니다.
+순전파 = input a[l-1], output a[l], Cache z[l]
+역전파 = input da[l], output da[l-1], dw[l], db[l]
+여기서 cache는 순전파에서 계산한 z[l]이 역전파에서 dz[l]을 구하는데 다시 사용되기 때문에 저장해 놓은 것을 의미합니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a4e876ea-a7f2-4752-9ff3-100eb8a37e0f)
+
+위를 토대로 전체 DNN에서의 과정을 요약하면 다음과 같습니다.
+
+#### Forward and Backward Propagation
+순전파>
+input a[l-1]
+output a[l], cache(z[l])
