@@ -9,3 +9,7 @@ Deep Learning Specialization on Coursera 강의를 들으며 4개월 간 AI 지�
 
 ## Purpose
 4개월 내 코세라 강의를 들으며 TensorFlow certification, GCP Professional Data Engineer certification, GCP Professional ML Engineer certification 중 하나의 자격증을 취득하는 것이 목표입니다.
+
+## Certification
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/cc9736a4-3a2d-42af-858a-dfea0928cebe)
+
