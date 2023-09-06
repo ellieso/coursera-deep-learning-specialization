@@ -65,3 +65,16 @@ specialization/assets/83899219/e9b6cab4-9b3f-485e-9f02-dfb5647b0355)
 순전파>
 input a[l-1]
 output a[l], cache(z[l])
+역전파>
+input da[l]
+output da[l-1], dW[l], db[l]
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a3f14d62-4041-4b05-b32e-adf5101ddc3f)
+
+전체 과정을 요약하면, X를 입력으로 중간에 존재하는 hidden layer는 activation function으로 ReLU가 될 것이고, 마지막 Output layer는 Sigmoid가 될 것이고,  순전파를 통해서 y_hat을 구한다. 그리고 이 값으로 Loss를 산출하고, 역전파를 통해서 미분항들을 산출하게 됩니다. 여기서 순전파의 경우에는 입력 X로 초기화되어서 계산되고, 역전파의 경우에는 dA[l]을 초기값으로 계산됩니다.
+
+#### Parameters vs Hyperparameters
+모델의 파라미터는 W와 B입니다. 그리고 알고리즘에서 설정해줘야 하는것이 learning rate α, 기울기 강하의 iteration의 수, hidden layer, hidden unit의 개수, activation 선택 등입니다. 이런 것들이 궁극적으로 W와 b를 컨트롤 하기 때문에 hyperparameter라고 합니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a942939f-e668-44a8-9dbf-b27d471a9ac9)
+
+'Empirical Process'는 여러 가지 방법을 시도해보고 어떤 것이 잘 동작하는지 확인하는 것을 표현한 것입니다.
+먼저 몇 개의 값으로 시도해보고, 더 좋은 값이 있는지 확인해보는게 최선이고, 이렇게 진행하다보면 하이퍼 파라미터에 대한 직관적인 이해도가 늘어나서 본인의 문제에 어떤 것이 가장 적합한지 배울 수 있을 것입니다.
