@@ -93,3 +93,30 @@ L2 정규화는 가중치 행렬이 너무 크면 줄여주는 역할을 하는�
 이 경우 Z의 값이 작으면 tanh의 선형부분만 사용할 것입니다.
 정규화에서 람다값이 크다면 W[l]값이 작아지고 결국 Z[l]값도 작아질 것입니다. 결과적으로 모든 층이 선형인 것과 비슷해집니다.
 Activation이 linear하기 때문에 비선형 decision이 불가능해서, overfitting할 수 없게 됩니다.
+
+### Dropout Regularization
+L2 정규화와 더불어 Drop out이 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/61e548f5-838f-418b-a443-2c9a587e4e92)
+
+이러한 신경망을 training하는데 과적합이 존재할 때 drop out을 통해 신경망의 노드를 제거하는 확률를 설정할 것입니다. 각 층, 노드별로 노드를 유지할 것인지 제거할 것인지에 대한 확률을 0.5로 설정하면 절반의 노드가 제거될 것입니다. 그 후 순전파와 역전파를 진행하면 됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/d06ac8cb-5f9e-4de9-9928-d6b109edfb21)
+
+방법이 무작위로 이루어지지만 정상적으로 잘 동작합니다. 훨씬 더 작은 네트워크를 트레이닝 시키기 때문에 정규화 효과를 얻을 수 있습니다.
+
+dropout을 도입하는 방법은 몇가지가 있는데 inverted dropout이 가장 효과적으로 사용됩니다.
+예시로 신경망에서 3번째 layer에서 dropout의 적용을 살펴보겠습니다.
+1. Dropout vector d를 생성합니다.
+d3는 np.random.rand(a3.shape[0], a3.shape[1])를 의미합니다.
+2. 그리고 우리는 d3가 어떤 숫자(keep_prob)보다 작은지 확인합니다. 여기서 keep_prob = 0.8이라고 하면, 그렇다면 노드가 제거될 확률이 0.2가 되는 것입니다.
+d3 = np.random.rand(a3.shape[0], a3.shape[1]) < keep_prob
+이렇게 한다면, d3는 0.8의 확률로 1이 되고, 0.2의 확률로 0인 vector가 됩니다.
+3. a3를 d3의 요소곱을 합니다. 
+a3 = np.multiply(a3, d3)
+4. 마지막으로 keep_prob로 나누어줍니다. 
+a3 /= keep_prob
+만약 50개의 units이 있는 layer라면, 10개의 units은 제거되어서 0이 될 것입니다.
+z[4] = w[4]a[3] + b[4]이고, a[3]가 20% 감소한다는 것을 알 수 있습니다.
+z[4]의 기대값을 감소시키지 않기 위해 a3에 0.8을 나누는 것입니다. 그러면 a3의 기대값도 변하지 않고 z4의 기대값도 변하지 않을 것입니다.
+invert dropout의 기대효과는 keep.prob을 어떻게 설정하더라도 1로 설정되면 dropout은 없습니다.
+
+주의해야 할 점은 test set에서는 dropout을 사용하지 않는 것입니다. 테스트에서 예측할 때 dropout을 사용하면, 예측값이 랜덤하게 되고, 결국에 예측값에 noise만 추가될 뿐입니다. 그리고 keep_prob를 나누어주는 연산을 했기 때문에, 테스트에서 dropout을 사용하지 않더라도 테스트의 기대값은 변하지 않습니다.
