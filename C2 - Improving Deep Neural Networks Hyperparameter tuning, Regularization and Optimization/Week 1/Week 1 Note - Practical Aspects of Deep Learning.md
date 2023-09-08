@@ -52,4 +52,44 @@ High variance가 있다면 그 문제를 해결하는 가장 좋은 방법은 �
 첫번째로, High bias, High variance 있는지 여부에 따라 시도해야하는 항목은 상당히 다를 수 있습니다. 일반적으로 training set를 사용하여 bias와 variance 문제가 있는지 확인한 후 적절한 하위 집합을 선택합니다. 만약 High bias가 있다면 더 많은 training data를 얻는 것은 실제로 도움이 되지 않습니다. 그러므로 가장 유용한 항목을 선택하는 것이 중요합니다.
 두번째로, 머신러닝 초기에는 bias와 variance trade off에 대한 많은 논의가 있었습니다. 시도할 수 있는 여러가지 방법 중에 bias를 늘리면서 동시에 variance을 줄이거나 bias를 줄이거나 variance를 늘릴 수 있습니다. 하지만 딥러닝 이전에 시대에는 도구가 많지 않았기 때문에 한 가지 요소의 희생이 없이는 bais나 variance를 줄일 수 있는 방법이 딱히 없었습니다. 하지만 현재 딥러닝은 빅데이터시대에 맞게 더 큰 네트워크를 계속 훈련할 수 있고 더 많은 데이터를 계속 얻을 수 있는 한 variance를 손상시키지 않으면서 bias를 줄입니다. 이러한 이유때문에 딥러닝이 굉장이 유용하기도 합니다.
 
+### Regularization
+정규화는 variance를 줄이기 위해 더 많은 훈련 데이터를 얻기 위한 것이기도 합니다. 정규화를 추가하면 과적합을 방지하는데 도움이 됩니다.
+로지스틱회귀의 경우 비용함수 J를 최소화하려고 한다는 점을 기억해야 합니다. 여기에 정규화를 추가하면 람다를 추가해야합니다.(w의 norm에 아래첨자 2는 이 norm이 L2 regularization이라는 의미입니다.)
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/2861cfe4-3b0e-4eac-8446-899bb88f6892)
 
+매개변수 w만 정규화하는 이유는 무엇일까요? b에도 정규화를 진행할 수 있지만 생략하겠습니다. 매개변수를 보면 w는 일반적으로 매우 높은 차원의 매개변수 벡터이며 high variance 문제가 있습니다. 반면 b는 그저 단수일 뿐입니다. 그래서 거의 모든 매개변수들이 b보다는 w에 있습니다.
+L2정규화는 가장 일반적인 유형의 정규화입니다. L1정규화를 사용한다면 w 벡터 안에 0값이 많이 존재하게 되어서 w는 결국 희박해집니다. 파라미터 set이 0이고, 모델을 저장하는데 더 적은 메모리를 사용해서, 모델을 압축하는데 유용하기도 합니다. 하지만, 그렇게 많이 사용되지는 않고, 대체로 L2 regularization이 많이 사용됩니다.
+람다는 정규화 파라미터입니다. 일반적으로 dev set를 사용하여 이것을 설정하거나 hold out 교차검증을 진행합니다. 그러므로 조정해야하는 하이퍼 파라미터입니다.
+파이썬 내부에 lambda라는 함수가 있기 때문에 정규화 매개변수를 나타내기 위해 lambd를 사용합니다.
+
+Neural network의 경우 정규화함수를 추가한 비함수는 다음과 같습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/be0d00cc-b61c-4549-bf81-05bc8ea2c203)
+
+여기서 w는 (n[l], n[l-1]) 행렬입니다. 여기서 사용된 정규화 방식은 Frobenius입니다.
+
+이것으로 경사하강법을 어떻게 구현할까요?
+역전파를 통해 dw를 구했고 W[l] := w[l] - αdW[l]의 방식으로 파라미터 W를 업데이트했습니다. 여기서 정규화항을 추가했기때문에 아래와 같은 방식으로 계산됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/e0732c59-d810-4ba3-9e40-13a576896ec5)
+
+그리고 파라미터는 아래와 같이 업데이트 됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/d3b6f2ec-06d4-4821-af93-b66c12848195)
+
+이러한 이유로 L2정규화를 가중감소라고도 합니다.
+
+### Why Regularization Reduces Overfitting?
+정규화는 high variance 문제 즉 overfitting문제를 해결하는데 어떻게 도움이 될까?
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/3567d5da-daca-4fc8-8902-82d2ee1f6f45)
+
+신경망이 제일 오른쪽 그림처럼 overfitting한다고 가정합니다. 그리고 비용함수 J는 다음과 같이 정의됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/6a77e27b-df1b-4b09-ba56-e10ce8e94f65)
+
+L2 정규화는 가중치 행렬이 너무 크면 줄여주는 역할을 하는데 이것이 과적합을 방지하는 이유가 됩니다.
+람다를 크게 만들면 W를 0에 가깝게 설정하도록 유도할 수 있습니다. 이렇게 된다면 hidden unit의 영향력을 없앨수 있습니다. 그렇게 되면 단순한 신경망은 훨씬 더 작은 신경망이 됩니다.
+결과적으로 오른쪽 그림에서 왼쪽의 경우처럼 이동하게 됩니다. 이상적으로 람다의 적당한 중간값을 통해서 딱맞는 값을 도출하면 됩니다.
+
+한가지 예제를 더 살펴보면 아래와 같은 함수가 있다고 할때, 
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/4da75433-1e7d-4fe3-9c92-e64b40dd983e)
+
+이 경우 Z의 값이 작으면 tanh의 선형부분만 사용할 것입니다.
+정규화에서 람다값이 크다면 W[l]값이 작아지고 결국 Z[l]값도 작아질 것입니다. 결과적으로 모든 층이 선형인 것과 비슷해집니다.
+Activation이 linear하기 때문에 비선형 decision이 불가능해서, overfitting할 수 없게 됩니다.
