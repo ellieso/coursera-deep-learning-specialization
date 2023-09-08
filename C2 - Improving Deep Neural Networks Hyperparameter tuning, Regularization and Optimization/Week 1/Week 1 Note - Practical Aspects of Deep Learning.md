@@ -120,3 +120,35 @@ z[4]의 기대값을 감소시키지 않기 위해 a3에 0.8을 나누는 것입
 invert dropout의 기대효과는 keep.prob을 어떻게 설정하더라도 1로 설정되면 dropout은 없습니다.
 
 주의해야 할 점은 test set에서는 dropout을 사용하지 않는 것입니다. 테스트에서 예측할 때 dropout을 사용하면, 예측값이 랜덤하게 되고, 결국에 예측값에 noise만 추가될 뿐입니다. 그리고 keep_prob를 나누어주는 연산을 했기 때문에, 테스트에서 dropout을 사용하지 않더라도 테스트의 기대값은 변하지 않습니다.
+
+### Understanding Dropout
+Dropout은 무작위로 unit을 제거하는 역할을 하는데, Regularization이 어떻게 잘 동작할 수 있는 것일까요?
+첫번째로 더 작은 신경망을 사용하는 것 정규화 효과가 있는 것 처럼 보입니다. 두번째 단일 유닛의 관점에서 보면 4개의 입력이 있을 때, 의미있는 결과값을 생성해야합니다. 이제 dropout으로 입력이 무작위로 제거될 수 있습니다. 이 때 의미있는 결과값이 되기 위해서는 어떤 한가지 feature에 의존하면 안됩니다. 그것이 언제든지 임의로 제거될 수 있기 때문입니다.그래서 한가지 입력에 큰 가중치를 주는 것을 주저하고 분산시키게 됩니다. 가중치를 분산시켜주면 norm을 축소시키는 효과가 있습니다. L2 Regularization와 유사하게 가중치를 줄이고 과적합 문제를 해결해줍니다.
+
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/0248b7fd-30f9-4aa6-aafc-9f5525f48558)
+
+이러한 NN이 있다고 가정합니다. 여기는 3개의 입력 특성이 있는 네트워크입니다. 선택해야하는 것 중 하나는 keep prob이며 레이어마다 유닛을 유지할 확률을 나타냅니다. 따라서 레이어별로 keep prob을 다르게 하는 것도 가능합니다.
+첫번째 레이어의 경우 w[1]은 7x3입니다. 두번째 레이어의 경우 w[2]는 7x7입니다. w[3]은 3x7이 됩니다. 그러면 두번째 레이어가 가중치가 가장 큰 행렬입니다. 그래서 그 행렬의 과적합을 줄이기 위해 두번째 레이어의 keep prob이 비교적 낮을 수 있습니다.
+Dropout은 Computer Vision에서 도입되었습니다. 컴퓨터비전에서는 입력값의 크기가 너무 커서, 모든 픽셀들을 입력하는데 항상 데이터가 부족합니다. 그렇기 때문에 컴퓨터 비전에서 자주 dropout이 활용됩니다.
+Dropout은 정규화 기법이며 overfitting 방지에 도움이 되는데 그 외에는 사용하지않는걸 권유합니다.
+Dropout을 사용하게 되면 Cross-validation에서 설정해야할 하이퍼파라미터가 증가한다는 것이 단점입니다.
+또한, Cost Function J가 명확하게 정의되지 않는다. 매 반복마다 노드를 무작위로 제거하기 때문에, Gradient Descent 성능을 더블체크하기가 어렵습니다.
+
+### Other Regularization Methods
+앞서 배웠던 L2 정규화와 dropout뿐만 아니라 다양한 정규화방법이 있습니다. 
+만약 데이터가 비싸고, 더이상 수집할 수 없는 경우에 Data augmentation 방법을 사용할 수 있습니다.이미지를 가로로 뒤집거나, 회전하고 줌인하거나, 또는 찌그러뜨리거나 확대를 해서 Data set을 확장할 수 있습다. 다만, 새로운 것 데이터를 추가하는 것보다는 좋지는 않지만 시간을 절약해주는 장점이 있습니다. 이 방법은 큰 비용없이 overfitting을 줄이는 방법입니다.
+
+**early stopping**
+Early Stopping은 Gradient Descent를 실행하면서 training set error나 J function과 dev set error 그래프를 그려서 W가 middle-size일 때, 중지시키는 방법입니다.
+학습 초기에 파라미터 W를 0에 가깝게 작은 값으로 초기화를 하고, 학습을 하면서 W는 증가하게 되는데 W의 비율이 중간정도되는 지점에서 중지하게 됩니다.
+
+머신러닝의 단계는 아래와 같이 두 가지로 나누어집니다.
+1. Cost Function J를 최적화(Optimize cost function J) - Gradient Descent
+2. Not Overfit - Regularization
+
+Early Stopping을 사용하면, 위 두 단계가 함께 적용되고, 별개의 문제를 각각 따로 해결할 수가 없게 됩니다.
+즉, overfitting을 해결하기 위해서 Gradient Descent를 중간에 멈추기 때문에, 최적화를 완벽하게 하지 못하고 J를 더이상 줄이지 못하게 됩니다. 이렇게 된다면 이후에 시도할 방법들을 더 복잡하게 만들게 됩니다.
+
+그래서 Early Stopping 대신, L2 Regularization을 사용하는 경우에는 더 길게 학습하면되고, 여러 값의 Lambda를 테스트해야하지만 하이퍼파라미터를 분해하는데 도움이 됩니다.
+다만, Early Stopping은 Gradient Descent 한번으로 W값을 설정할 수 있습니다.
+그래서 단점이 있지만 종종 사용되는 방법이지만, 주로 L2 Regularization을 사용하는 것을 선호합니다.
