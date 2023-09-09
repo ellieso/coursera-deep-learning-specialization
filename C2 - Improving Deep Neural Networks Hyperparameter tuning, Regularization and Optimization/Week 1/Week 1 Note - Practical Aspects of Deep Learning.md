@@ -152,3 +152,28 @@ Early Stopping을 사용하면, 위 두 단계가 함께 적용되고, 별개의
 그래서 Early Stopping 대신, L2 Regularization을 사용하는 경우에는 더 길게 학습하면되고, 여러 값의 Lambda를 테스트해야하지만 하이퍼파라미터를 분해하는데 도움이 됩니다.
 다만, Early Stopping은 Gradient Descent 한번으로 W값을 설정할 수 있습니다.
 그래서 단점이 있지만 종종 사용되는 방법이지만, 주로 L2 Regularization을 사용하는 것을 선호합니다.
+
+### Normalizing Inputs
+학습속도를 높일 수 있는 방법 중 하나는 표준화를 하는 것입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/1706623e-f73a-474b-ab2c-cb771f0de80f)
+
+두 개의 input이 있는 경우를 살펴보면 표준화를 하는 방법은 두단계로 이루어집니다. 
+첫번째로 평균을 빼거나 0으로 만드는 단계입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/1e795b8e-1d43-4d2a-a55c-255911dcda70)
+
+이와 같이 평균을 구해서 x:=x−μ를 진행하면 됩니다.
+두번째로 분산을 정규화하는 단계입니다. 특징 x1은 특징 x2보다 분산이 훨씬 큽니다. 정규화를 진행하면 분산이 모두 1이 되는 결과가 됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/8bb4f3df-8222-4928-9f42-2fd99fc62e0a)
+
+만약 이 방법을 training set에 적용할 것이라면 동일한 μ,σ값을 test set에 적용해야 합니다.
+
+입력 특징을 정규화하는 이유는 다음과 같습니다. 정규화되지 않은 입력 특징을 사용하는 경우 비용 함수는 아래와 같은 형태를 띄고 있을 수 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/b18fb9d3-3eaa-48f9-ba1a-dbd85926267c)
+
+만약 x1의 범위가 1~1000이고, x2의 범위가 0부터 1이라 가정하면 w1과 w2의 범위가 매우 다른 값을 띄게 될 것입니다.
+이 값을 정규화시킨다면 아래 그림과 같이 평균적으로 더 대칭으로 보일 것입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/2babe3c4-a2cd-4b63-a60f-7839072b9c14)
+
+만약 normalization되지 않은 feature를 사용한다면, 매우 작은 learning rate를 사용해야 됩니다. 왜냐하면 Gradient Descent 를 수행하면 더 많은 단계를 거쳐서 최소값에 도달하기까지 계속 왔다갔다 할 수 있기 때문입니다.
+물론 실제로는 파라미터 W가 고차원의 matrix이기 때문에 그래프로 나타내기는 힘들어서 정확하게 전달되지 않는 부분도 있지만, 주로 Cost Function은 더 구형이 띄고 feature를 유사한 scale로 맞추게 되면 더 쉽게 최적화할 수 있습니다.
+만약 x1이 0~1의 범위를 갖고, x2가 -1~1의 범위를 갖고, x3가 1~2의 범위를 갖는다면, 이 feautre들은 서로 비슷한 범위에 있기 때문에 실제로 잘 동작합니다. 정규화를 진행하는 건 범위가 크게 다를 때가 문제인데, 범위가 비슷할 경우 평균을 0으로 만들고, 분산을 1로 만든다면 학습이 더 빨라질 수 있습니다.
