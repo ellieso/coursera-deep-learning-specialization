@@ -182,4 +182,41 @@ Early Stopping을 사용하면, 위 두 단계가 함께 적용되고, 별개의
 DNN을 학습할 때 가장 큰 문제점 중 하나는 데이터 소실과 기울기 폭발의 문제가 발생하는 것입니다. DNN을 훈련하는 경우 분산이나 기울기가 때때로 매우 크거나 굉장히 작은 값을 갖게 될 수 있는데 이런 경우 훈련이 매우 까다로울 수 있습니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/ae97e9e4-c26a-4999-8469-56487b044dc1)
 
-이렇게 깊은 신경망이 있다고 할 때, 
+이렇게 깊은 신경망이 있다고 할 때, y=W[L]W[L-1]W[L-2]...W[3]W[2]W[1]x입니다.
+만약에 [1.5   0] 라고 한다면 실제로는 단위 매트릭스의 1.5배입니다.
+       [0   1.5]
+결과적으로 y_hat은 근본적으로 1.5의 L승 곱하기 L-1승 곱하기 x입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/95520fb7-d6d9-40ad-a605-ab5ef0ab3313)
+
+y_hat에 1.5L이 곱해지므로 매우 deep한 NN일 경우에는 결과값이 기하급수적으로 증가할 것입니다.
+반대로 1.5를 0.5로 변경하게 되면 0.5L이 되어서 결과값은 매우 작은 값이 될 수 있습니다.
+W의 비중(I Matrix보다 크거나 작은 경우에)에 따라서, activation unit이 매우 커지거나 작아질 수 있다는 것입니다.
+기울기가 매우 작거나 크다면, 학습이 어렵습니다. 특히, 기울기가 매우 작으면 Gradient Descent에 많은 시간이 걸려서 학습이 오래 걸리게 됩니다.
+
+### Weight Initialization for Deep Networks
+Vanishing / Exploding Gradients 문제를 해결하기 위해서 신경망의 무작위 초기화 선택을 더 괜찮거나 조심스럽게 하는 것입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/8f9ca486-977c-43ed-8d18-9966cf465f36)
+
+이런 경우에 적절한 z값을 찾기 위해서 n이 많을수록 w는 더 작아져야 합니다. 이것을 위해 한가지 한리적인 방법은 wi의 분산을 1/n과 같도록 하는 것입니다.
+만약 activation function으로 ReLU를 쓰는 경우에는 1/n이 아닌 2/n을 사용하는 것이 잘 동작합니다.​
+
+### Numerical Approximation of Gradients
+역전파를 사용하는 경우에 Gradient Checking이라는 테스트를 통해서 역전파 과정이 올바른지 확인할 수 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a5a4fb16-b698-49b2-8a10-d7d20595d59a)
+
+이와 같은 그래프의 기울기를 구한다고 할 때 구하는 지점은 θ는 1입니다. 그리고 ϵ값을 0.01로 두고 θ값에서 빼고 더합니다.
+높이를 너비로 나누어서 기울기를 구할 수 있습니다. 큰 삼각형과 작은 삼각형 두개의 값을 비교해보면 큰 삼각형이 미분값과 더 유사해서 정확도가 높습니다.
+
+### Gradient Checking
+Gradient Checking는 역전파를 사용할 때 버그를 찾아줌으로써 문제점을 해결하는데 도움을 줍니다.
+Gradient Checking을 하기 위한 방법
+1. 모든 파라미터를 자이언트 벡터 데이터 형식으로 재정비해야합니다.
+2. dW, db를 dθ로 만들어서 J(θ)의 기울기와 비교합니다.
+Gradient Checking을 하기 위해서는 루프를 도입합니다. 각각의 i 즉 θ각각의 요소에 dθ를 i에서 b까지 산출하겠습니다. 그리고 엡실론 값을 더해주고 빼줍니다. 결과적으로 이 값은 dθ[i]와 같아야 합니다.
+그리고 역전파를 통해서 구한 dθ와 비교하는데 식은 다음과 같습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/b3dfcc1b-aee7-47cc-97a3-bb8005bf1eaf)
+
+이 때 비교값은 ϵ=10−7로 설정하며, ϵ만큼의 값이 나오거나 더 작은 값이 나온다면 역전파의 과정이 정상이라는 것입니다.
+ 
+
+
