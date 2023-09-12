@@ -217,6 +217,13 @@ Gradient Checking을 하기 위해서는 루프를 도입합니다. 각각의 i 
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/b3dfcc1b-aee7-47cc-97a3-bb8005bf1eaf)
 
 이 때 비교값은 ϵ=10−7로 설정하며, ϵ만큼의 값이 나오거나 더 작은 값이 나온다면 역전파의 과정이 정상이라는 것입니다.
+
+### Gradient Checking Implementation Notes
+ Gradient Checking 사용 시 Tip
+ 1. 훈련에서 기울기 검사를 사용하지 말고 디버그용으로만 사용(dθ approx[i]를 계산하는 것)
+ 2. 알고리즘이 Gradient Checking에 실패한 경우 요소들을 확인해라.
+ 3. Gradient Checking에 정규화를 사용하는 경우 정규화항을 기억해라.
+ 4. Gradient Checking은 dropout에서 작동하지 않습니다.(무작위로 unit을 제거하기 때문에)
+ 5. 자주 사용하지는 않지만, 파라미터가 0에 가까울 때, Gradient Descent가 잘 동작할 수도 있습니다. 하지만, Gradient Descent를 진행하면서 파라미터 W, b가 커지면, BP는 오직 W와 b가 0에 가까울 때만 잘 동작할 수 있고, W와 b의 값이 커질수록 정확도가 떨어지게 되는 것입니다. 여기서 한 가지 할 수 있는 방법은 Gradient Checking을 random initialization에서 실행시키고, 어느 정도 네트워크 학습을 진행하고, 다시 Gradient Checking을 실행하는 것입니다.
+
  
-
-
