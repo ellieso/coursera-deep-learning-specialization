@@ -84,3 +84,17 @@ Momentum을 사용하면 경사하강의 속도를 높일 수 있습니다. 또 
 RMSprop 알고리즘은 현재 mini-batch에 대해서 dW, db를 구하고, 이번에는 SdW 표기를 사용해서 구하게 되는데 dW와 db를 제곱해서 SdW와 Sdb를 구하면 됩니다. 이것은 지수가중이동평균을 유지하 것을 의미합니다. 가로방향의 변동은 증가시키고 세로방향의 변동은 늦추고 싶기 때문에 SdW는 비교적 작은 값이 되어야 하고 Sdb는 비교적 큰 값이 되어야 합니다.
 실제 미분항을 보면, 가로방향에서보다 세로방향으로 더 큰 것을 볼 수 있고, 기울기는 b방향으로 더 크게 됩니다. 
 
+이것이 RMSprop이며 momentum과 비슷하게 경사하강을 진행할 때의 진동을 감소시키는 효과가 있습니다. 이렇게 진동을 감소시키면, 더 큰 learning rate α를 사용할 수 있고, 학습 알고리즘의 속도를 증가시킬 수 있습다.
+
+### Adam optimization algorithm
+Adam은 adptive moment estimation의 약자로  Momentum과 RMSprop를 합치는 것이라고 생각하면 됩니다.
+Adam을 구하려면 V_dW=0, SdW=0으로 초기화하면 되며 마찬가지로 V_db, S_db =0입니다. t를 반복하면서 미니배치를 사용하여 dw와 db를 계산합니다. 그리고 모멘텀을 진행하고 RMSprop도 진행하며 업데이트 해줍니다. 추가적으로 Adam에서는 Bias Correction도 같이 진행하게 됩니다. 그렇게 해서 구해진 VcorrecteddW, Vcorrecteddb, ScorrecteddW, Scorrecteddb를 가지고 W,b파라미터를 업데이트 하면 됩니다.
+이 알고리즘에는 다양한 하이퍼파라미터가 있습니다. 그 중 learning rate α는 매우 중요하고 β1의 기본값은 0.9이고 β2의 값은 0.999를 권장하고, ϵ의값은 10-8을 권장하지만 성능에 거의 영향이 없기 때문에 바꾸지않아도 됩니다.
+
+### Learning Rate Decay
+알고리즘을 더 빠르게 학습시킬 수 있는 방법 중 하나는 learing rate를 시간의 지남에 따라 학습률을 천천히 줄이는 것을 의미합니다. mini-batch GD를 사용한다고 가정해보면, 우리는 학습을 반복하면서 최소값으로 향하는 경향이 있지만, 정확하게 최소값으로 수렴하지는 않을 것입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/124ddda4-5f20-4392-adc8-e9cac4529c75)
+
+위와 같이 최소값 주변을 멤돌면서 절대로 수렴하지 않을 것입니다. 이것은 learning rate를 어떤 값으로 고정시켰고, noise가 존재하기 때문입니다. 만약에 learning rate를 천천히 감소시킨다면 처음에는 빠르게 학습할 것인데 점점 줄어들어 매우 좁은 범위를 왔다갔다 할 것입니다.
+Learning Rate Decay의 구현은 1 / (1+ decay rate * epoch-num) * α0 입니다. epoch는 각 mini-batch set에 대해서 진행하는 것을 의미하고, α0는 초기 learning rate입니다.
+위 수식 외에도 다른 방법이 있는데 (0.95 * epoch-num * α0) - exponentially decay / (k/ 루트 epoch-num)* α0 / discrete staircase /  수동으로 decay 입니다.
