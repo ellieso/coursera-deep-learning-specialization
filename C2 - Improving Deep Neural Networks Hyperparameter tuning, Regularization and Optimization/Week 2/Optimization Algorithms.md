@@ -68,3 +68,16 @@ Develop your deep learning toolbox by adding more advanced optimizations, random
 
 가중이동평균을 구할 때 화씨가 40도인 경우에 v0은 0으로 초기화를 하고 시작하기 때문에 0.98x0으로 의미없는 값이 됩니다. 그래서 둘째날의 기온은 v1은 0.02*40으로 8이 되기 때문에 너무 작은 값이 도출됩니다. 초반에는 좋은 값이 아니기 때문에 이것을 보정하기 위해서 bias보정 방법을 사용합니다. 이 때 vt 대신에 vt/(1-βt)를 사용합니다.
 이렇게 초기 지수이동평균값을 1-βt로 보정해주고 t값이 충분히 커지면 βt는 0으로 수렴하게 되고 bias보정 영향은 사라지게 됩니다.
+
+### Gradient Descent with Momentum
+Momentum 또는 Gradient Descent with momentum이라고 하는 알고리즘이 있습니다. 이 알고리즘은 일반적인 기울기 하강 알고리즘보다 더 빨리 작동합니다. 기본아이디어는 기울기의 지수가중평균을 산출하는 것입니다. 그 다음에 이 기울기를 이용해서 가중을 업데이트 하는 것입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/e5fc41bb-4fc6-42c0-8876-98003df5c5b7)
+
+이러한 곡선을 가진 비용함수를 최적화 한다고 할 때, 빨간점은 최소점의 위치를 나타냅니다. 기울기 하강이 여러차례 일어나 천천히 최소값을 향해 접근하게 될 것입니다. 이렇게 왔다갔다하는 변동폭이 기울기 하강을 느리게 하고 더 큰 학습률을 쓰지 않게 합니다. 만약 더 큰 학습률을 쓰게 한다면 발산하거나 갈라지게 할 수 있습니다. 따라서 진동이 너무 커지는 것을 방지해야 하기 때문에 너무 크지 않는 학습률을 사용해야합니다. 진동하는 폭을 감소시키기 위해서 우리는 세로축에서는 slower learning, 가로축에 대해서는 faster learning을 원할 것입니다. 이것은 Gradient Descent with momentum을 통해서 감소시킬 수 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/4650c8a8-f474-4112-91b2-2982e4f74051)
+
+구하는 과정은 현재의 mini-batch에서 dW와 dB를 구합니다. 그 다음에는 dW와 dB에 대해서 EMA를 구하고, 이렇게 구한 EMA를 가지고 W와 b 파라미터를 업데이트합니다. 이 과정을 통해서 경사하강법 더욱 부드럽게 해주게 됩니다. 결과적으로 세로축의 변동 평균은 거의 0이되고, 가로축의 변동 평균이 꽤 큰 값이 되어서, 아래와 같이 빨간색 그래프처럼 최소값을 향해서 접근하게 됩니다.알고리즘에서 dW와 db는 가속도의 역할을 하고, VdW,Vdb는 속도의 역할을 하게 되는 것입니다.
+
+### RMSprop
+Momentum을 사용하면 경사하강의 속도를 높일 수 있습니다. 또 다른 RMSprop이라는 알고리즘이 있습니다. Root Mean Square prop의 약자로 경사하강의 속도를 높일 수도 있습니다.
+세로축을 파라미터 b라고 하고 가로축을 파라미터 w라고 할 때, 
