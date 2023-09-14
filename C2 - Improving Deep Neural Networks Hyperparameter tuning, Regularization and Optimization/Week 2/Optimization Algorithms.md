@@ -98,3 +98,16 @@ Adam을 구하려면 V_dW=0, SdW=0으로 초기화하면 되며 마찬가지로 
 위와 같이 최소값 주변을 멤돌면서 절대로 수렴하지 않을 것입니다. 이것은 learning rate를 어떤 값으로 고정시켰고, noise가 존재하기 때문입니다. 만약에 learning rate를 천천히 감소시킨다면 처음에는 빠르게 학습할 것인데 점점 줄어들어 매우 좁은 범위를 왔다갔다 할 것입니다.
 Learning Rate Decay의 구현은 1 / (1+ decay rate * epoch-num) * α0 입니다. epoch는 각 mini-batch set에 대해서 진행하는 것을 의미하고, α0는 초기 learning rate입니다.
 위 수식 외에도 다른 방법이 있는데 (0.95 * epoch-num * α0) - exponentially decay / (k/ 루트 epoch-num)* α0 / discrete staircase /  수동으로 decay 입니다.
+
+### The problem of local optima
+딥러닝 초기에는 좋지 않은 local optima에 갇히는 것을 매우 불안해했습니다. 점차 딥러닝 분야가 발견되어가면서 local optima에 관한 내용이 변하고 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/0bb389dd-aa32-41b5-93eb-8cefd4f9e60c)
+
+초기의 local optima의 모양입니다. 이런 경우에는 local optima가 많이 존하고 local optima에 수렴하는 경우가 쉽게 발생할 것입니다. 실제로 이 그래프는 올바르지 않기 때문에 그래프를 다시 그ㅕ보면 아래와 같습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/3cc484bd-3d62-42b4-8b49-d09a0464017b)
+
+기울기가 0인 지점이 항상 이렇게 local optima인 것은 아니고, Cost Function에서 기울기가 0인 대부분의 지점들은 saddle point입니다. 그러므로 local optima는 큰 문제가 되지 않습니다.
+
+local optima가 문제가 아니라면 plateaus가 문제가 될 수 있습니다. plateaus는 미분이 오랫동안 0에 가까운 영역입니다. 그래서 plateaus 구간을 빠져나오는데 매우 많은 시간이 소요될 수 있습니다.
+
+중요하게 알아야 할 것은 비교적 신경망이 큰 네트워트를 훈련하는 이상 안좋은 local optima에 갇힐 확률을 작으며 비용함수는 비교적 고차원의 공간에서 정의됩니다. 또한 plateaus가 문제가 되서 학습의 속도를 저하할 수 있는데 momentum, RMSprop, 또는 Adam과 같은 알고리즘이 plateaus를 빠져나오는 속도를 높혀줄 수 있습니다.
