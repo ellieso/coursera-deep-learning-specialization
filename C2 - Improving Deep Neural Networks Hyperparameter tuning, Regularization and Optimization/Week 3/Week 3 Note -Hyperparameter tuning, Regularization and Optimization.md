@@ -1,5 +1,4 @@
-![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a48f6d8f-b818-43b3-a37f-9f6bafa5fd84)Explore TensorFlow, a deep learning framework that allows you to build neural networks quickly and easily
-, then train a neural network on a TensorFlow dataset.
+Explore TensorFlow, a deep learning framework that allows you to build neural networks quickly and easily, then train a neural network on a TensorFlow dataset.
 
 ## 학습목표
 
@@ -45,3 +44,13 @@ Deep Neural Network를 훈련하는 과정에서 힘든 부분 중 하나는 많
 지수가중평균에서 β값은 1에 가까워질수록 결과에 민감해집니다. 0.9000에서 0.9005로 0.0005가 증가하면 큰 영향을 미치지 않을 것입니다. 하지만 0.9990에서 0.9995로 동일하게 0.0005가 증가하면, 결과에 많은 차이를 보이게 될것입니다.
 
 ### Hyperparameters tuning in practice: Pandas vs. Caviar
+하이퍼파라미터 탐색을 위한 팁과 기술은 다음과 같습니다. 딥러닝은 오늘날 많은 분야에서 적용되어 있는데 한 분야에서 사용되는 적절한 하이퍼파라미터가 다른 분야에 적용될 수도 있고 아닐수도 있습니다.
+모델을 학습하고 적절한 하이퍼파라미터의 값을 찾았더라도, 시간이 지나면서 데이터가 변하거나, 데이터센터의 서버를 업그레이드하거나, 이러한 변화들 때문에 우리가 찾은 하이퍼파라미터의 값이 더 이상 최적의 파라미터가 아니게 될 수 있습니다. 그러므로 다시 테스트하거나 하이퍼파라미터를 재평가하는 것이 필요합니다.
+하이퍼파라미터를 탐색하는 방법은 2가지가 있습니다. 
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/22ccd0e5-391a-4411-a34e-14575c6391f3)
+
+첫번째로는 데이터의 양이 매우 많고, 연산을 위한 Resource가 많이 없을 때 적용되며, Resource는 CPU나 GPU를 의미하고, 충분하지 않아서 한 번에 1가지 모델만 학습할 수 있을 경우를 의미합니다. 예를들어 day 0일때, 파라미터를 임의로 초기화시키고 학습을 합니다. 그리고 learning curve(cost J에 대한 그래프)를 보면서, 적절하게 동작한다면 감소하는 learning curve를 볼 수 있을 것입니다. 그렇게 day 1이 지나면서 cost가 감소하는 것을 확인하고 learning speed를 약간 높힐 수 있고, day 2의 결과를 확인합니다. day 2의 성능도 좋다는 것을 확인할 수도 있는데, 이런 방식으로 진행하다가 보면 어느날에는 learning speed가 너무 컸다는 것을 깨달을 수 있는데, 이렇게 되면 이전 모델로 다시 돌아갈 것이입니다. 이 방법은 성능을 관찰하고 인내심 있게 학습률을 높이거나 낮추는 것입니다. 이 경우는 일반적으로 많은 모델을 동시에 훈련할 수 없는 경우에 발생합니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/37e198d1-d597-4fdb-803a-dac2886bc8d2)
+
+다른 방법으로는 병렬방식으로 여러모델을 훈련시키는 방법입니다. 하이퍼파라미터 일부를 설정할 수 있는데 혼자 작동하게 놔두는 것입니다.
+Babysitting one model방법은 판다 접근 법이라고 부르고 Training many models in parallel 캐비어 접근법이라고 불립니다. 이 두개의 접근방식 중 고르는 방법은 얼마나 산출자원을 가지고 있느냐에 따라 달라집니다. 
