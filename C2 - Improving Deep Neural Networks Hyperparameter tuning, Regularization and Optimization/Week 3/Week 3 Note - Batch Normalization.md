@@ -17,4 +17,19 @@ Batch Normalization이 어떻게 신경망에 적용되는지 알아보겠습니
 mini-batch에 Batch Normalization을 적용하면 다음과 같이 적용됩니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/6a566bd3-693f-4ff2-a5d1-55df4714a723)
 
-여기서 b[l]은 무시될 수 있는데, batch norm에서 평균값을 구하고, input에 평균값을 빼기 때문에 상수항을 더하는 것은 아무런 효과가 없어지기 때문입니다.
+여기서 b[l]은 무시될 수 있는데, Batch Normalization에서 평균값을 구하고, input에 평균값을 빼기 때문에 상수항을 더하는 것은 아무런 효과가 없어지기 때문입니다.
+Batch Normalization을 mini-batch에 사용해서 경사하강 진행은 아래와 같이 수행됩니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/f6d40b6f-58f7-4129-9071-c5a6f22484be)
+
+### Why does Batch Norm work?
+Batch Normalization이 작동하는 이유는 무엇일까요? 한가지 이유는 X라는 입력특성을 정규화하여 평균값을 0, 분산 1 로 만들었는데 이것이 학습의 속도를 증가시킵니다. 모든 특성을 정규화하기 때문에 input값이 비슷한 범위를 갖게 되고 학습 속도가 증가하는 것입니다. 그리고 이 정규화는 input layer 뿐만아니라 hidden unit에도 적용됩니다.
+두번재 이유는 Batch Normalization을 통해서 모델이 w에 변화에 덜 민감해지기 때문입니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/23634857-84bf-4614-8322-69e84cab18d1)
+
+위와 같은 Logistic Regression에서 우리가 모든 데이터를 검은 고양이의 사진으로 학습을 진행했다고 가정한다면, 이 모델이 오른쪽의 색깔이 있는 고양이에 적용하면, 분류기가 잘 동작하지 않을 수 있습니다. 이렇게 데이터의 분포가 변하는 것을 covariate shift라고 불리는데, 만약 입력 x의 분포도가 변경되면 학습 알고리즘을 다시 학습시켜야 할 수도 있습니다.
+
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/a93e1a3d-cdc6-4214-bf4f-99702bf3b180)
+이러한 신경망이 있다고 할 때, 3번째 레이어에서는 w[3]과 b[3]을 학습했을 것입니다. 그리고 3번째 layer를 기준으로 특정값들을 이전층에서 가지고 오는데 ground True Y값으로 만들기 위해서는 몇가지 작업을 진행해야 합니다.
+그렇다면 세번째 layer 기준에서 살펴보면, a[2]는 항상변하는 것이고 언급했었던 covariate shift 문제가 발생하게 됩니다. 여기서 Batch Normalization의 역할이 이런 hidden unit의 분포가 변경되는 정도를 줄여줍니다. batch normalization은 이전 layer의 파라미터들을 업데이트 하면서 변하더라도평균값과 분산은 똑같게 유지해줍니다
+여기서 γ와 β는 새로 학습해야 하는 파라미터 입니다. 결과적으로 Batch Normalization은 input 값이 변해서 생기는 문제들을 줄여줍니다. 입력의 분포도가 약간 변경될 수는 있지만, 변경되는 정도를 줄여주고 결과적으로 다음 layer에서 학습해야되는 양을 줄여주어서 더 안정적으로 학습할 수 있게 합니다.
+추가적으로 Batch Normalization은 Regularization의 효과가 있습니다. 각 mini-batch에서는 해당되는 mini-batch의 데이터로만 mean/variance를 계산했기 때문에 전체 샘플로 했을 구했을 때보다 더 noisy하고, 결과적으로 z틸다 또한 noisy해질 것입니다. 그 결과, dropout과 유사하게 hidden layer activation에 noisy를 더하게 되는 것이고, 이로 인해서 regularization의 효과가 발생하는 것입니다.
