@@ -33,3 +33,10 @@ Batch Normalization이 작동하는 이유는 무엇일까요? 한가지 이유�
 그렇다면 세번째 layer 기준에서 살펴보면, a[2]는 항상변하는 것이고 언급했었던 covariate shift 문제가 발생하게 됩니다. 여기서 Batch Normalization의 역할이 이런 hidden unit의 분포가 변경되는 정도를 줄여줍니다. batch normalization은 이전 layer의 파라미터들을 업데이트 하면서 변하더라도평균값과 분산은 똑같게 유지해줍니다
 여기서 γ와 β는 새로 학습해야 하는 파라미터 입니다. 결과적으로 Batch Normalization은 input 값이 변해서 생기는 문제들을 줄여줍니다. 입력의 분포도가 약간 변경될 수는 있지만, 변경되는 정도를 줄여주고 결과적으로 다음 layer에서 학습해야되는 양을 줄여주어서 더 안정적으로 학습할 수 있게 합니다.
 추가적으로 Batch Normalization은 Regularization의 효과가 있습니다. 각 mini-batch에서는 해당되는 mini-batch의 데이터로만 mean/variance를 계산했기 때문에 전체 샘플로 했을 구했을 때보다 더 noisy하고, 결과적으로 z틸다 또한 noisy해질 것입니다. 그 결과, dropout과 유사하게 hidden layer activation에 noisy를 더하게 되는 것이고, 이로 인해서 regularization의 효과가 발생하는 것입니다.
+
+### Batch Norm at test time
+Batch Norm은 데이터를 한 번에 하나의 미니 배치로 처리하지 test time에는 예제를 한 번에 하나씩 처리해야 할 수도 있습니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/465743d8-69d2-4908-a238-dded6270883a)
+
+Batch Norm에 사용할 방정식입니다. 싱글 미니 배치 안에서 평균을 계산하기 위해 Z(i)값과 미니 배치를 합산합니다. 하지만 test time에서는 64,128,256개의 예시들을 한번에 처리할 수 있는 미니배치가 없을 수 있습니다. 그렇기 때문에 μ와 σ2을 구하기 위한 어떠한 또 다른 방법이 필요합니다. 그리고 만약 1개의 예시밖에 없는 경우 1개의 값을 가지고 평균과 편차를 구하는 것은 말이 안됩니다.
+test time에서 신경망을 적용한다는 것 별도의 μ와 σ2의 예측값을 구하는 것입니다. 지수가중평균방식을 이용하여 그 평균은 미니배치에서의 값으로 하여 구합니다. 지수가중평균방식을 사용해서 학습에 사용되는 값들을 사용해서 예측값을 구하기 때문에 running average라도 불리기도하며, 꽤 정확하고 안정적인 편입니다.
