@@ -65,6 +65,11 @@ F1 score의 공식은 2/(1/P+1/R)입니다. Precision와 Recall의 균형을 맞
 ### Train/dev/test distributions
 training/dev/test set을 어떻게 설정하는지에 따라 머신러닝 프로젝트 속도가 크게 달라질 수 있습니다. 이 영상에서는 dev/test set을 설정하는 방법에 대해서 알아보도록 하겠습니다.
 일반적인 머신러닝의 워크플로우는 다양한 아이디어를 시도해보고 다양한 모델을 training set에서 훈련시켜보고 dev set를 이용해서 여러 아이디어를 평가한 뒤 그 중 하나를 고르는 것입니다. dev set의 성능 개선을 위해 마지막으로 한가지를 선택하고 test set로 평가해보는 것입니다.
-US, UK, Other Europe, South America, India, China, Other Asia, Australia에서 고양이 분류기를 운영하고 있다고 하면 어떻게 dev set와 test set를 설정할 수 있을까요? 한가지 방법으로는 언급한 대륙 중에서 4가지를 고를 수 있습니다. 이 4가지 대륙은 무작위로 선별된 대륙일 수도 있습니다. 나머지 4개의 대륙은 test set이 될 것입니다. 하지만, 이렇게 dev set과 test set을 설정하는 것은 dev set과 test set이 모두 다른 분포도를 갖고 있기 때문에 아주 좋지 않은 방법입니다.
+US, UK, Other Europe, South America, India, China, Other Asia, Australia에서 고양이 분류기를 운영하고 있다고 하면 어떻게 dev set와 test set를 설정할 수 있을까요? 한가지 방법으로는 언급한 대륙 중에서 4가지를 고를 수 있습니다. 이 4가지 대륙은 무작위로 선별된 대륙일 수도 있습니다. 나머지 4개의 대륙은 test set이 될 것입니다. 하지만, 이렇게 dev set과 test set을 설정하는 것은 dev set과 test set이 모두 다른 분포도를 갖고 있기 때문에 아주 좋지 않은 방법입니다. 그렇기 때문에, dev set과 test set을 설정할 때에는 같은 분포도를 가지는 데이터에서 설정하는 것을 권장합니다.
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/2da44cb3-5985-4b11-95c5-492754c9a0ee)
+
 
 ### Size of the dev and test sets
+지난 영상에서 dev set과 test set가 같은 분포에서 와야한다는 것을 배웠습니다. 그렇다면 크기를 어떻게 설정해야하는지에 대해 알아보겠습니다.
+머신러닝 초기에는 training set와 test set를 7:3의 비율로 나누는 방법을 사용했었는데 dev set도 사용해야 한다면 6:2:2의 비율로 사용했습니다. 데이터의 크기가 크지 않는 초기에는 합리적인 방법이었습니다. 하지만 최근에는 훨씬 더 큰 데이터의 세트를 다룹니다. 만약 백만개의 데이터가 있다고 할 때, training set를 98%, 나머지를 1%씩 분배하는 것이 이상적이라고 할 수 있을것입니다. 
+Test set의 목적은 시스템의 개발이 완료된 후에, 마지막에 시스템이 얼마나 좋은 성능을 가지고 있는지 평가하는데 도움을 줍니다. 최종시스템의 성능을 정확하게 측정할 필요가 없는 이상 많은 test set는 필요없을 수 있으며 있다고 생각하는 수준이면 됩니다. 
