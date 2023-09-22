@@ -13,3 +13,4 @@ Deep Learning Specialization on Coursera 강의를 들으며 4개월 간 AI 지�
 ## Certification
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/cc9736a4-3a2d-42af-858a-dfea0928cebe)
 
+![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/7cf868e9-59d4-4b7d-9055-cd2473ed2ad0)
