@@ -1,4 +1,4 @@
-![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/29b458b4-a8c5-4c0c-8c53-98bd8c066341)Streamline and optimize your ML production workflow by implementing strategic guidelines for goal-setting and applying human-level performance to help define key priorities.
+Streamline and optimize your ML production workflow by implementing strategic guidelines for goal-setting and applying human-level performance to help define key priorities.
 
 ## 학습목표
 - Explain why Machine Learning strategy is important
@@ -155,5 +155,5 @@ human-level error는 bayes error를 추정하는 방법이 될 수 있습니다.
 ![image](https://github.com/ellieso/coursera-deep-learning-specialization/assets/83899219/0c684193-3137-4e8d-bf32-b03e30159414)
 
 avoidable bias를 줄이는 방법으로는 더 큰 모델을 학습시키거나, 더 긴 시간을 가지고 학습하거나, 더욱 향상된 최적화 알고리즘(Momentum, RMSProp, Adam)을 사용하는 방법이 있습니다. 또 다른 방법으로는 더 좋은 구조를 사용하는 것인데, 더 좋은 hyperparameter를 사용하거나, activation function의 선택 및 layer의 개수, hidden unit의 개수를 바꾸는 방법이 있을 수 있습니다.
-variance가 문제라면, 더 많은 data를 수집하거나, regularization을 시도해볼 수 있습니다. 그리고 avoidable bias와 동일하게 NN의 구조를 변경할 수 있고, hyperparameter를 변경해서 개선할 수도 있습다.
+variance가 문제라면, 더 많은 data를 수집하거나, regularization을 시도해볼 수 있습니다. 그리고 avoidable bias와 동일하게 NN의 구조를 변경할 수 있고, hyperparameter를 변경해서 개선할 수도 있습니다.
 
